@@ -94,6 +94,7 @@ def train_explosion():
         ## Distributive end
         
         best_of_each_gen.append(best_agent[0])
+        print("Best score: ", best_agent[1])
 
         # print(population)
         
