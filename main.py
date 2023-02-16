@@ -122,6 +122,6 @@ if __name__ == "__main__":
 
 
     
-    # print(explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
-
-    
+    #print(explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
+    print(glider_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
+    print(agent.dna)

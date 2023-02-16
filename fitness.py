@@ -10,16 +10,27 @@ def glider_fitness(agent, max_frames = 1000, board_dim = (50, 50), starting_pos 
     gol_board.add_agent(starting_pos, agent)
     
     # Calculate the sum of all values in the board
+    av_positions = list()
     while gol_board.next_frame() and gol_board.curr_frame < max_frames:
         if gol_board.curr_frame > 1:
-            s = np.sum(gol_board.board) / np.log10(gol_board.curr_frame)
+            # calculate the average position?
+            #for frame in gol_board.frames:
+            pos = [0, 0]
+            for m in gol_board.board:
+                #print(y)
+                for n in gol_board.board[m]:
+                    if n == 1:
+                        pos[0] += m
+                        pos[1] += n
+            av_positions.append(pos)
+            # or hold all the positional values and see how closely it matches linear movement
         else:
             s = 0
             
         if s > score:
             score = s
             
-    return score
+    return av_positions
     
 
 def explosion_fitness(agent, max_frames = 1000, board_dim = (50, 50), starting_pos = (23, 23)):
