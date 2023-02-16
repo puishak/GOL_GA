@@ -126,7 +126,7 @@ if __name__ == "__main__":
 
         animate_board(gol_board, frame_rate = 10, text="gen: " + str(gen))
         gen += 1
-        print(glider_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
+        print("\n", glider_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
 
 
 
