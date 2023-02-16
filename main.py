@@ -5,8 +5,8 @@ from gol import *
 from fitness import *
 
 
-def animate_board(gol, frame_rate = 10):
-    rootWindow = "  --  GAME OF LIFE!!  --  "
+def animate_board(gol, frame_rate = 10, text = ""):
+    rootWindow = "  --  GAME OF LIFE!!  --  " + text
     cv.namedWindow(rootWindow)
 
     scale_factor = np.int32(1000 / gol.dim[0])
@@ -52,12 +52,15 @@ def next_generation(population, population_size = 100, mutation_rate = 0.01):
     new_population = {}
     
     for i in range(population_size):
-        parent1 = accept_reject(population)
-        parent2 = accept_reject(population)
+        # parent1 = accept_reject(population)
+        # parent2 = accept_reject(population)
         
-        child = parent1.crossover(parent2)
+        # child = parent1.crossover(parent2)
+        # child.mutate(mutation_rate)
+        
+        child = accept_reject(population)
         child.mutate(mutation_rate)
-                
+        
         new_population[child] = 0
         
     return new_population
@@ -66,12 +69,13 @@ def train_explosion():
     board_dim = (50, 50)
     agent_dim = (4, 4)
     starting_pos = (23, 23)
+    mutation_rate = 0.1
     
     best_of_each_gen = []
-    num_generation = 5
+    num_generation = 10
     
     # Create the population
-    num_agents = 100
+    num_agents = 500
     # population: [(agent:DNA, score:int)]
     population = {}
     # Create the initial population
@@ -98,7 +102,7 @@ def train_explosion():
 
         # print(population)
         
-        population = next_generation(population)
+        population = next_generation(population, mutation_rate=mutation_rate)
     
     return best_of_each_gen
 
@@ -109,6 +113,7 @@ if __name__ == "__main__":
     
     agents = train_explosion()
     
+    gen = 1
     
     for agent in agents:
         
@@ -119,10 +124,11 @@ if __name__ == "__main__":
         # Define the position we would like to place the agent
         gol_board.add_agent(starting_pos, agent)
 
-        animate_board(gol_board, frame_rate = 10)
+        animate_board(gol_board, frame_rate = 10, text="gen: " + str(gen))
+        gen += 1
 
 
     
     #print(explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
-    print(glider_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
-    print(agent.dna)
+    # print(glider_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
+    # print(agent.dna)

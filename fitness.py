@@ -53,3 +53,15 @@ def explosion_fitness(agent, max_frames = 1000, board_dim = (50, 50), starting_p
             
     return score
         
+def duration_fitness(agent, max_frames = 5000, board_dim = (50, 50), starting_pos = (23, 23)):
+    
+    ## Set up the board
+    gol_board = GOL(board_dim)
+    gol_board.add_agent(starting_pos, agent)
+    
+    # Calculate the sum of all values in the board
+    while gol_board.next_frame() and gol_board.curr_frame < max_frames:
+        pass
+            
+    return gol_board.curr_frame
+        
