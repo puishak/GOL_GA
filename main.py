@@ -29,15 +29,85 @@ def animate_board(gol, frame_rate = 10):
             break
     cv.destroyAllWindows()
     
+def accept_reject(population):
+    pool = population.keys()
+    total_fitness =  np.sum(list(population.values()))
     
-if __name__ == "__main__":
-    board_dimention = (50, 50)
+    safe = 0
+    while True:
+        
+        agent = np.random.choice(pool)
+        
+        r = np.random.rand() * total_fitness
+        
+        if r < population[agent]:
+            return agent
+        
+        safe += 1
+        if safe > 10000:
+            print("something wrong in the accept-reject")
+            return agent
+
+def next_generation(population, population_size = 100, mutation_rate = 0.01):
+    new_population = {}
+    
+    for i in range(population_size):
+        parent1 = accept_reject(population)
+        parent2 = accept_reject(population)
+        
+        child = parent1.crossover(parent2)
+        child.mutate(mutation_rate)
+                
+        new_population[child] = 0
+        
+    return new_population
+
+def train_explosion():
+    board_dim = (50, 50)
     agent_dim = (4, 4)
     starting_pos = (23, 23)
     
+    best_of_each_gen = []
+    num_generation = 5
+    
+    # Create the population
+    num_agents = 100
+    # population: [(agent:DNA, score:int)]
+    population = {}
+    # Create the initial population
+    for i in range(num_agents):
+        agent = DNA(agent_dim)
+        score = 0
+        population[agent] = score
+        
+    for i in range(num_generation):
+        best_agent = (None, 0)    
+        
+        # Score the population
+        ## Hook this up to the distributive end
+        for agent in population.keys():
+            score = explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos)
+            population[agent] = score
+            if score > best_agent[1]:
+                best_agent = (agent, score)
+        ## Distributive end
+        
+        best_of_each_gen.append(best_agent)
 
+        # print(population)
+        
+        population = next_generation(population)
+    
+    
+
+if __name__ == "__main__":
+    board_dim = (50, 50)
+    agent_dim = (4, 4)
+    starting_pos = (23, 23)
+    
+    
     # Create the game of life baord
-    gol_board = GOL(board_dimention)
+    gol_board = GOL(board_dim)
 
     # Create a random agent
     agent = DNA(agent_dim)
@@ -50,6 +120,6 @@ if __name__ == "__main__":
 
     animate_board(gol_board, frame_rate = 30)
     
-    print(explosion_fitness(agent, board_dim=board_dimention, starting_pos=starting_pos))
+    print(explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
 
     
