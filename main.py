@@ -30,7 +30,7 @@ def animate_board(gol, frame_rate = 10):
     cv.destroyAllWindows()
     
 def accept_reject(population):
-    pool = population.keys()
+    pool = list(population.keys())
     total_fitness =  np.sum(list(population.values()))
     
     safe = 0
@@ -81,6 +81,7 @@ def train_explosion():
         population[agent] = score
         
     for i in range(num_generation):
+        print("Generation: ", i)
         best_agent = (None, 0)    
         
         # Score the population
@@ -92,34 +93,35 @@ def train_explosion():
                 best_agent = (agent, score)
         ## Distributive end
         
-        best_of_each_gen.append(best_agent)
+        best_of_each_gen.append(best_agent[0])
 
         # print(population)
         
         population = next_generation(population)
     
-    
+    return best_of_each_gen
 
 if __name__ == "__main__":
     board_dim = (50, 50)
     agent_dim = (4, 4)
     starting_pos = (23, 23)
     
+    agents = train_explosion()
     
-    # Create the game of life baord
-    gol_board = GOL(board_dim)
-
-    # Create a random agent
-    agent = DNA(agent_dim)
-    # Define the position we would like to place the agent
-    gol_board.add_agent(starting_pos, agent)
-
-
-    # mat = np.array([[0, 1, 0], [0, 0, 1], [1, 1, 1]])
-    # gol_board.modify((5, 5), mat)
-
-    animate_board(gol_board, frame_rate = 30)
     
-    print(explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
+    for agent in agents:
+        
+        # Create the game of life baord 
+        gol_board = GOL(board_dim)
+
+        # Create a random agent
+        # Define the position we would like to place the agent
+        gol_board.add_agent(starting_pos, agent)
+
+        animate_board(gol_board, frame_rate = 10)
+
+
+    
+    # print(explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
 
     

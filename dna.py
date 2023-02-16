@@ -25,16 +25,35 @@ class DNA:
         
     
     def mutate(self, rate):
-        """_summary_
-
-        Args:
-            rate (_type_): _description_
-        """
-        pass
+        for i in range(self.dna.shape[0]):
+            for j in range(self.dna.shape[1]):
+                # randomly flip the value with 1% probability
+                if np.random.rand() < rate:
+                    self.dna[i, j] = 1 - self.dna[i, j]
+        
     
     def crossover(self, other):
-        child = DNA(self)
-        child.dna[-1] = other.dna[-1]
+        
+        if self.dna.shape != other.dna.shape:
+            return -1
+        
+        child = DNA(self.dna.shape, mode = "dead")
+        
+        shape = self.dna.shape
+        child.dna = self.dna
+        
+        start_row = np.random.randint(shape[0])
+        start_col = np.random.randint(shape[1])
+
+        if start_row >= 0 and start_col >= 0:
+            child.dna[start_row:, start_col:] = other.dna[start_row:, start_col:]
+        
+        end_row = np.random.randint(shape[0])
+        end_col = np.random.randint(shape[1])
+
+        if start_row >= 0 and start_col >= 0:
+            child.dna[:end_row, :end_col] = other.dna[:end_row, :end_col]
+        
         return child
     
     
