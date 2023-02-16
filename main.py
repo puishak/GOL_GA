@@ -119,9 +119,11 @@ if __name__ == "__main__":
         gol_board.add_agent(starting_pos, agent)
 
         animate_board(gol_board, frame_rate = 10)
+        print(glider_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
+
 
 
     
     #print(explosion_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
-    print(glider_fitness(agent, board_dim=board_dim, starting_pos=starting_pos))
-    print(agent.dna)
+
+    
