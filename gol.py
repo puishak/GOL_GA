@@ -1,12 +1,8 @@
 import numpy as np
 from dna import *
 
-class GOL:
-    
-    # Border type - "solid", "waterfall"
-    
+class GOL:    
     def __init__(self, dim) -> None:
-        # dim needs to be (m, n)
         self.dim = dim
         self.board = np.zeros(dim)
         self.curr_frame = 0
@@ -17,16 +13,6 @@ class GOL:
         
     
     def modify(self, pos, mat):
-        """Modify the board by replacing part of the original board with the mat at the position pos
-        Return 1 if modification is successful else return -1
-
-        Args:
-            pos (_type_): tuple specifying the top-left corner of the new matrix
-            mat (_type_): np.array object of the new matrix
-
-        Returns:
-            _type_: _description_
-        """
         # pos is the top left corner of the matrix
         # mat is the matrix of True/False that is to be added on top of the current board
 
